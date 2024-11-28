@@ -4,9 +4,8 @@ export interface RouteConfiguration {
     element:JSX.Element;
 }
 
-
 export const RoutesConfigurations:RouteConfiguration[] = [
-    {title: "Home", path: "/", element: <div>Home</div>},
+    {title: "Home", path: "/", element: <div className="bg-blue-300">Home</div>},
     {title: "Sales", path: "/sales", element: <div>Sales</div>},
     {title: "New Products", path: "/newproducts", element: <div>New Products</div>}
 ];
