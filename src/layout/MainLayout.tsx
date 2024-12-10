@@ -7,6 +7,7 @@ import {
 } from "../RouteConfiguration";
 import { Content, Footer, Header } from "antd/es/layout/layout";
 import { MenuInfo } from "rc-menu/lib/interface";
+import { ProductDetails } from "../components/ProductDetails";
 
 export default function MainLayout() {
   const [routes, setRoutes] = useState<RouteConfiguration[]>([]);
@@ -37,7 +38,7 @@ export default function MainLayout() {
         <Menu
           theme="dark"
           mode="horizontal"
-          defaultSelectedKeys={["2"]}
+          defaultSelectedKeys={["0"]}
           style={{
             flex: 1,
             minWidth: 0,
@@ -68,6 +69,7 @@ export default function MainLayout() {
             {routes.map((route: RouteConfiguration, i: number) => (
               <Route key={i} path={route.path} element={route.element} />
             ))}
+            <Route path="products/:productName" element={<ProductDetails />} />
           </Routes>
         </div>
       </Content>

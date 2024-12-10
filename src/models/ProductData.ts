@@ -3,4 +3,5 @@ export interface ProductProps {
     category:string;
     description:string;
     price:number;
+    onDetailsClick?: () => void;
 }

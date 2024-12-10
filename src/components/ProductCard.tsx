@@ -8,6 +8,7 @@ export const ProductCard: React.FC<ProductProps> = ({
   category,
   description,
   price,
+  onDetailsClick,
 }) => {
   return (
     <div className="w-48 h-[375px] flex flex-col p-2 box-border bg-white shadow-xl rounded-lg">
@@ -22,7 +23,7 @@ export const ProductCard: React.FC<ProductProps> = ({
       </div>
       <div className="flex items-center py-2 justify-between">
         <Button type="primary">Im Warenkorb</Button>
-        <Button type="primary" shape="circle" icon={<InfoCircleOutlined />} />
+        <Button type="primary" shape="circle" onClick={onDetailsClick} icon={<InfoCircleOutlined />} />
       </div>
     </div>
   );
