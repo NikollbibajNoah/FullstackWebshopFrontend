@@ -69,7 +69,7 @@ export default function MainLayout() {
             {routes.map((route: RouteConfiguration, i: number) => (
               <Route key={i} path={route.path} element={route.element} />
             ))}
-            <Route path="products/:productName" element={<ProductDetails />} />
+            <Route path="products/:id" element={<ProductDetails />} />
           </Routes>
         </div>
       </Content>
