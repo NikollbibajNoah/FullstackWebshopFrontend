@@ -1,0 +1,26 @@
+{
+    "folders": [
+        {
+            "path": "."
+        }
+    ],
+    "launch": {
+        "version": "0.2.0",
+        "configurations": [
+            {
+                "command": "npm run dev",
+                "name": "Run Application",
+                "request": "launch",
+                "type": "node-terminal",
+                "cwd": "${workspaceFolder}/frontend"
+            },
+            {
+                "command": "json-server --watch ./database/DB.json --port 5000",
+                "name": "Run json-server",
+                "request": "launch",
+                "type": "node-terminal"
+                
+            }
+        ]
+    }
+}
