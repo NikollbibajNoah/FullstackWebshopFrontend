@@ -26,7 +26,9 @@ export const Products = () => {
 
     const fetchData = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/products");
+        const endpoint = "https://localhost:7071/StoreProducts";
+        // const res = await axios.get("http://localhost:5000/products");
+        const res = await axios.get(endpoint);
 
         if (res.status === 200) {
           setProducts(res.data);
