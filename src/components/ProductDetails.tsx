@@ -21,10 +21,13 @@ export const ProductDetails = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/products?id=${id}`);
+        // const res = await axios.get(`http://localhost:5000/products?id=${id}`);
+        const res = await axios.get(`https://localhost:7071/StoreProducts/${id}`);
+
+        console.log("Res:", res)
 
         if (res.status === 200) {
-          setProduct(res.data[0]);
+          setProduct(res.data);
         }
       } catch (error) {
         console.error(error);
