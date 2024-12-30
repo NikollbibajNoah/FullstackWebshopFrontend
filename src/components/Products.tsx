@@ -26,18 +26,26 @@ export const Products = () => {
 
     const fetchData = async () => {
       try {
-        const endpoint = "https://localhost:7071/StoreProducts";
-        // const res = await axios.get("http://localhost:5000/products");
+        const isDev = import.meta.env.VITE_DEV_MODE;
+
+        let endpoint: string = "";
+
+        if (isDev === "true") {
+          endpoint = "http://localhost:5000/products";
+        } else {
+          endpoint = "https://localhost:7071/StoreProducts";
+        }
+
         const res = await axios.get(endpoint);
 
         if (res.status === 200) {
           setProducts(res.data);
-          console.log(res.data)
+          console.log(res.data);
         }
       } catch (error) {
         console.error(error);
       }
-    }
+    };
 
     fetchData();
   }, []);
