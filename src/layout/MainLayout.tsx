@@ -1,4 +1,4 @@
-import { Layout, Menu, theme } from "antd";
+import { Button, Layout, Menu, theme } from "antd";
 import React, { useEffect, useState } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import {
@@ -8,6 +8,7 @@ import {
 import { Content, Footer, Header } from "antd/es/layout/layout";
 import { MenuInfo } from "rc-menu/lib/interface";
 import { ProductDetails } from "../components/ProductDetails";
+import { ShoppingCartOutlined } from "@ant-design/icons";
 
 export default function MainLayout() {
   const [routes, setRoutes] = useState<RouteConfiguration[]>([]);
@@ -21,7 +22,7 @@ export default function MainLayout() {
     const key = Number(e.key);
 
     navigate(routes[key].path);
-  }
+  };
 
   const {
     token: { colorBgContainer, borderRadiusLG },
@@ -51,10 +52,14 @@ export default function MainLayout() {
             <Menu.Item key={i}>{c.title}</Menu.Item>
           ))}
         </Menu>
+        <div>
+          <Button type="primary">
+            <span>Warenkorb</span>
+            <ShoppingCartOutlined />
+          </Button>
+        </div>
       </Header>
-      <Content
-      className={"py-2 px-12"}
-      >
+      <Content className={"py-2 px-12"}>
         {/* <h1>{config[currentKey].title}</h1> */}
         <h1>asdad</h1>
         <div

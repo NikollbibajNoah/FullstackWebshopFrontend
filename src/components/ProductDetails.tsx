@@ -21,10 +21,17 @@ export const ProductDetails = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // const res = await axios.get(`http://localhost:5000/products?id=${id}`);
-        const res = await axios.get(`https://localhost:7071/StoreProducts/${id}`);
+        const isDev = import.meta.env.VITE_DEV_MODE;
 
-        console.log("Res:", res)
+        let endpoint: string = "";
+
+        if (isDev === "true") {
+          endpoint = "http://localhost:5000/products";
+        } else {
+          endpoint = "https://localhost:7071/StoreProducts";
+        }
+
+        const res = await axios.get(`${endpoint}/${id}`);
 
         if (res.status === 200) {
           setProduct(res.data);

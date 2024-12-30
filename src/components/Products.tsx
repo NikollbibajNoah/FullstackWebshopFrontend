@@ -13,17 +13,6 @@ export const Products = () => {
   };
 
   useEffect(() => {
-    // const checkConnection = async () => {
-    //   try {
-    //     const res = await axios.get("http://localhost:5000");
-
-    //     return res.status === 200;
-    //   } catch (error) {
-    //     console.error(error);
-    //     return false;
-    //   }
-    // }
-
     const fetchData = async () => {
       try {
         const isDev = import.meta.env.VITE_DEV_MODE;
