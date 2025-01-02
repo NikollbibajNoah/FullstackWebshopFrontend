@@ -9,6 +9,7 @@ import { Content, Footer, Header } from "antd/es/layout/layout";
 import { MenuInfo } from "rc-menu/lib/interface";
 import { ProductDetails } from "../components/ProductDetails";
 import { ShoppingCartOutlined } from "@ant-design/icons";
+import { ShoppingCart } from "../components";
 
 export default function MainLayout() {
   const [routes, setRoutes] = useState<RouteConfiguration[]>([]);
@@ -23,6 +24,10 @@ export default function MainLayout() {
 
     navigate(routes[key].path);
   };
+
+  const handleShoppingCartNavigation = () => { 
+    navigate("/shoppingcart");
+   }
 
   const {
     token: { colorBgContainer, borderRadiusLG },
@@ -53,7 +58,7 @@ export default function MainLayout() {
           ))}
         </Menu>
         <div>
-          <Button type="primary">
+          <Button type="primary" onClick={handleShoppingCartNavigation}>
             <span>Warenkorb</span>
             <ShoppingCartOutlined />
           </Button>
@@ -75,6 +80,7 @@ export default function MainLayout() {
               <Route key={i} path={route.path} element={route.element} />
             ))}
             <Route path="products/:id" element={<ProductDetails />} />
+            <Route path="shoppingcart" element={<ShoppingCart />} />
           </Routes>
         </div>
       </Content>

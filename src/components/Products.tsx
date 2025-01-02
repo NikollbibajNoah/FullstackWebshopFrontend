@@ -4,6 +4,16 @@ import { ProductCard } from "./ProductCard";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
+export interface ShoppingCartProductsProps {
+  id?: number;
+  productId: number;
+  productName: string;
+  productCategory: string;
+  productPrice: number;
+  productDescription: string;
+  productImage: string;
+}
+
 export const Products = () => {
   const [products, setProducts] = useState<ProductProps[]>([]);
   const navigate = useNavigate();
@@ -11,6 +21,28 @@ export const Products = () => {
   const handleNavigation = (product: ProductProps) => {
     navigate(`/products/${product.id}`);
   };
+
+  const handleAddToCart = async (product: ProductProps) => {
+    console.log("Added to cart:", product);
+    try {
+      const data: ShoppingCartProductsProps = {
+        productId: product.id,
+        productName: product.name,
+        productPrice: product.price,
+        productCategory: product.category,
+        productDescription: product.description,
+        productImage: product.image ? product.image : "",
+      }
+      const res = await axios.post("http://localhost:5000/shoppingcart", data);
+      
+      if (res.status === 200) {
+        console.log("Product added to cart", res.data);
+      }
+    } catch (error) {
+      console.error(error);
+      
+    }
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -47,6 +79,7 @@ export const Products = () => {
             key={i}
             {...p}
             onDetailsClick={() => handleNavigation(p)}
+            onAddToCartClick={() => handleAddToCart(p)}
           />
         ))
       ) : (

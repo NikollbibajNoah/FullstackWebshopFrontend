@@ -3,7 +3,6 @@ import { ProductProps } from "../models/ProductData";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Dummy from "@assets/images/dummy.png";
-import Test from "@assets/images/test.jpg";
 import { Button } from "antd";
 import {
   ArrowLeftOutlined,

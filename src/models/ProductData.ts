@@ -4,5 +4,7 @@ export interface ProductProps {
     category:string;
     description:string;
     price:number;
+    image?: string;
+    onAddToCartClick?: () => void;
     onDetailsClick?: () => void;
 }
