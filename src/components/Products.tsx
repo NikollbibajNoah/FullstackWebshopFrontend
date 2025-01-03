@@ -12,6 +12,7 @@ export interface ShoppingCartProductsProps {
   productPrice: number;
   productDescription: string;
   productImage: string;
+  quantity: number;
 }
 
 export const Products = () => {
@@ -32,17 +33,34 @@ export const Products = () => {
         productCategory: product.category,
         productDescription: product.description,
         productImage: product.image ? product.image : "",
+        quantity: 1,
+      };
+      const checkRes = await axios.get("http://localhost:5000/shoppingcart");
+
+      if (checkRes.status === 200) {
+        const shoppingCartProducts: ShoppingCartProductsProps[] = checkRes.data;
+
+        const productExists = shoppingCartProducts.find(
+          (cartProduct) => cartProduct.productId === product.id
+        );
+
+        if (productExists) {
+          productExists.quantity++;
+          console.log("Product already exists in cart");
+          await axios.put(`http://localhost:5000/shoppingcart/${productExists.id}`, productExists);
+          return;
+        }
       }
+
       const res = await axios.post("http://localhost:5000/shoppingcart", data);
-      
+
       if (res.status === 200) {
         console.log("Product added to cart", res.data);
       }
     } catch (error) {
       console.error(error);
-      
     }
-  }
+  };
 
   useEffect(() => {
     const fetchData = async () => {

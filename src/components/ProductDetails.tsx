@@ -9,6 +9,7 @@ import {
   LeftOutlined,
   RightOutlined,
 } from "@ant-design/icons";
+import { ShoppingCartProductsProps } from "./Products";
 
 export const ProductDetails = () => {
   const [product, setProduct] = useState<ProductProps | null>(null);
@@ -42,6 +43,31 @@ export const ProductDetails = () => {
 
     fetchData();
   }, []);
+
+  const handleAddToCart = async () => {
+    console.log("Added to cart:", product);
+    try {
+      if (!product) throw new Error("Product not found");
+
+      const data: ShoppingCartProductsProps = {
+        productId: product.id,
+        productName: product.name,
+        productPrice: product.price,
+        productCategory: product.category,
+        productDescription: product.description,
+        productImage: product.image ? product.image : "",
+        quantity: 1,
+      }
+      const res = await axios.post("http://localhost:5000/shoppingcart", data);
+      
+      if (res.status === 200) {
+        console.log("Product added to cart", res.data);
+      }
+    } catch (error) {
+      console.error(error);
+      
+    }
+  }
 
   const handleReturnEvent = () => {
     navigate(-1);
@@ -95,7 +121,7 @@ export const ProductDetails = () => {
           <div className="text-xl">{product?.price} CHF</div>
         </div>
         <div className="">
-          <Button type="primary" className="">
+          <Button type="primary" className="" onClick={handleAddToCart}>
             Im Warenkorb
           </Button>
         </div>

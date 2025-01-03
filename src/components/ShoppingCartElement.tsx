@@ -7,6 +7,8 @@ import { ShoppingCartProductsProps } from "./Products";
 export interface ShoppingCartElementProps extends ShoppingCartProductsProps {
   quantity: number;
   onClick: () => void;
+  onQuantityChange: (quantity: number) => void;
+  onDelete: () => void;
 }
 
 export const ShoppingCartElement: React.FC<ShoppingCartElementProps> = ({
@@ -16,6 +18,8 @@ export const ShoppingCartElement: React.FC<ShoppingCartElementProps> = ({
   productImage,
   quantity,
   onClick,
+  onQuantityChange,
+  onDelete,
 }) => {
   return (
     <div className="w-full h-20 mb-5 flex shadow rounded-lg">
@@ -41,8 +45,10 @@ export const ShoppingCartElement: React.FC<ShoppingCartElementProps> = ({
           min={1}
           max={10}
           defaultValue={quantity}
+          onChange={(value) => value && onQuantityChange(value)}
         />
-        <Button className="w-full" type="primary" danger>
+        <Button className="w-full" type="primary" danger
+          onClick={onDelete}>
           Entfernen <DeleteOutlined />
         </Button>
       </div>
