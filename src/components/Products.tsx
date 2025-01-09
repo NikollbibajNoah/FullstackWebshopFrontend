@@ -37,7 +37,7 @@ export const Products = () => {
   }, []);
 
   return (
-    <div className="grid grid-cols-5 gap-4 place-items-center">
+    <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 place-items-center">
       {products.length > 0 ? (
         products.map((p: ProductProps, i: number) => (
           <ProductCard
