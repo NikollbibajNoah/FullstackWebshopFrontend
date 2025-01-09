@@ -1,7 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { ProductProps } from "../models/ProductData";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import Dummy from "@assets/images/dummy.png";
 import { Button } from "antd";
 import {
@@ -9,7 +8,7 @@ import {
   LeftOutlined,
   RightOutlined,
 } from "@ant-design/icons";
-import { ShoppingCartProductsProps } from "./Products";
+import { addProductToCart, fetchProductById } from "../services";
 
 export const ProductDetails = () => {
   const [product, setProduct] = useState<ProductProps | null>(null);
@@ -20,76 +19,15 @@ export const ProductDetails = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const isDev = import.meta.env.VITE_DEV_MODE;
-
-        let endpoint: string = "";
-
-        if (isDev === "true") {
-          endpoint = "http://localhost:5000/products";
-        } else {
-          endpoint = "https://localhost:7071/StoreProducts";
-        }
-
-        const res = await axios.get(`${endpoint}/${id}`);
-
-        if (res.status === 200) {
-          setProduct(res.data);
-        }
-      } catch (error) {
-        console.error(error);
-      }
+      const data = await fetchProductById(Number(id));
+      setProduct(data);
     };
 
     fetchData();
   }, []);
 
   const handleAddToCart = async () => {
-    console.log("Added to cart:", product);
-    try {
-      if (product) {
-        const data: ShoppingCartProductsProps = {
-          productId: product.id,
-          productName: product.name,
-          productPrice: product.price,
-          productCategory: product.category,
-          productDescription: product.description,
-          productImage: product.image ? product.image : "",
-          quantity: 1,
-        };
-        const checkRes = await axios.get("http://localhost:5000/shoppingcart");
-
-        if (checkRes.status === 200) {
-          const shoppingCartProducts: ShoppingCartProductsProps[] =
-            checkRes.data;
-
-          const productExists = shoppingCartProducts.find(
-            (cartProduct) => cartProduct.productId === product.id
-          );
-
-          if (productExists) {
-            productExists.quantity++;
-            console.log("Product already exists in cart");
-            await axios.put(
-              `http://localhost:5000/shoppingcart/${productExists.id}`,
-              productExists
-            );
-            return;
-          }
-        }
-
-        const res = await axios.post(
-          "http://localhost:5000/shoppingcart",
-          data
-        );
-
-        if (res.status === 200) {
-          console.log("Product added to cart", res.data);
-        }
-      }
-    } catch (error) {
-      console.error(error);
-    }
+    await addProductToCart(product!);
   };
 
   const handleReturnEvent = () => {

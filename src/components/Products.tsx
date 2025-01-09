@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { ProductProps } from "../models/ProductData";
 import { ProductCard } from "./ProductCard";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { addProductToCart, fetchProducts } from "../services";
 
 export interface ShoppingCartProductsProps {
   id?: number;
@@ -24,67 +24,14 @@ export const Products = () => {
   };
 
   const handleAddToCart = async (product: ProductProps) => {
-    console.log("Added to cart:", product);
-    try {
-      const data: ShoppingCartProductsProps = {
-        productId: product.id,
-        productName: product.name,
-        productPrice: product.price,
-        productCategory: product.category,
-        productDescription: product.description,
-        productImage: product.image ? product.image : "",
-        quantity: 1,
-      };
-      const checkRes = await axios.get("http://localhost:5000/shoppingcart");
-
-      if (checkRes.status === 200) {
-        const shoppingCartProducts: ShoppingCartProductsProps[] = checkRes.data;
-
-        const productExists = shoppingCartProducts.find(
-          (cartProduct) => cartProduct.productId === product.id
-        );
-
-        if (productExists) {
-          productExists.quantity++;
-          console.log("Product already exists in cart");
-          await axios.put(`http://localhost:5000/shoppingcart/${productExists.id}`, productExists);
-          return;
-        }
-      }
-
-      const res = await axios.post("http://localhost:5000/shoppingcart", data);
-
-      if (res.status === 200) {
-        console.log("Product added to cart", res.data);
-      }
-    } catch (error) {
-      console.error(error);
-    }
+    await addProductToCart(product);
   };
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const isDev = import.meta.env.VITE_DEV_MODE;
-
-        let endpoint: string = "";
-
-        if (isDev === "true") {
-          endpoint = "http://localhost:5000/products";
-        } else {
-          endpoint = "https://localhost:7071/StoreProducts";
-        }
-
-        const res = await axios.get(endpoint);
-
-        if (res.status === 200) {
-          setProducts(res.data);
-          console.log(res.data);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
+      const data = await fetchProducts();
+      setProducts(data);
+    }
 
     fetchData();
   }, []);
