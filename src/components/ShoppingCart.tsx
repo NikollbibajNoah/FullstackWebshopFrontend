@@ -30,6 +30,7 @@ export const ShoppingCart = () => {
 
         const products = Array.from(productsMap.values());
 
+        console.log(products);
         setProducts(products);
       }
     } catch (error) {
@@ -89,11 +90,12 @@ export const ShoppingCart = () => {
           products.length > 0 ? (
             products.map((product: ShoppingCartElementProps, i: number) => (
               <ShoppingCartElement
-                key={i}
+                key={product.productId}
                 {...product}
                 onClick={() => console.log("Pressed:", i)}
                 onQuantityChange={(quantity: number) =>
-                updateProductQuantity(product, quantity)}
+                  updateProductQuantity(product, quantity)
+                }
                 onDelete={() => deleteFromCart(product)}
               />
             ))

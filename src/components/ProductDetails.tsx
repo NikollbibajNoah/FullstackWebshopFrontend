@@ -47,31 +47,54 @@ export const ProductDetails = () => {
   const handleAddToCart = async () => {
     console.log("Added to cart:", product);
     try {
-      if (!product) throw new Error("Product not found");
+      if (product) {
+        const data: ShoppingCartProductsProps = {
+          productId: product.id,
+          productName: product.name,
+          productPrice: product.price,
+          productCategory: product.category,
+          productDescription: product.description,
+          productImage: product.image ? product.image : "",
+          quantity: 1,
+        };
+        const checkRes = await axios.get("http://localhost:5000/shoppingcart");
 
-      const data: ShoppingCartProductsProps = {
-        productId: product.id,
-        productName: product.name,
-        productPrice: product.price,
-        productCategory: product.category,
-        productDescription: product.description,
-        productImage: product.image ? product.image : "",
-        quantity: 1,
-      }
-      const res = await axios.post("http://localhost:5000/shoppingcart", data);
-      
-      if (res.status === 200) {
-        console.log("Product added to cart", res.data);
+        if (checkRes.status === 200) {
+          const shoppingCartProducts: ShoppingCartProductsProps[] =
+            checkRes.data;
+
+          const productExists = shoppingCartProducts.find(
+            (cartProduct) => cartProduct.productId === product.id
+          );
+
+          if (productExists) {
+            productExists.quantity++;
+            console.log("Product already exists in cart");
+            await axios.put(
+              `http://localhost:5000/shoppingcart/${productExists.id}`,
+              productExists
+            );
+            return;
+          }
+        }
+
+        const res = await axios.post(
+          "http://localhost:5000/shoppingcart",
+          data
+        );
+
+        if (res.status === 200) {
+          console.log("Product added to cart", res.data);
+        }
       }
     } catch (error) {
       console.error(error);
-      
     }
-  }
+  };
 
   const handleReturnEvent = () => {
     navigate(-1);
-  }
+  };
 
   return (
     <div>
@@ -85,7 +108,11 @@ export const ProductDetails = () => {
       <div className="flex flex-col mb-6">
         <div className="h-96 mb-2 flex justify-center items-center flex-col">
           <div className="h-full">
-            <img src={Dummy} alt="product image" className="h-full shadow object-cover" />
+            <img
+              src={Dummy}
+              alt="product image"
+              className="h-full shadow object-cover"
+            />
           </div>
         </div>
         <div className="flex justify-center h-8 gap-5">
