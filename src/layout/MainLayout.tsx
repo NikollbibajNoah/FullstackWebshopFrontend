@@ -1,4 +1,4 @@
-import { Button, Layout, Menu, theme } from "antd";
+import { Button, Layout, Menu, theme, CollapseProps, Collapse } from "antd";
 import React, { useEffect, useState } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import {
@@ -9,11 +9,19 @@ import { Content, Footer, Header } from "antd/es/layout/layout";
 import { MenuInfo } from "rc-menu/lib/interface";
 import { ProductDetails } from "../components/ProductDetails";
 import { ShoppingCartOutlined } from "@ant-design/icons";
-import { ShoppingCart } from "../components";
+import { FilterOptions, ShoppingCart } from "../components";
 
 export default function MainLayout() {
   const [routes, setRoutes] = useState<RouteConfiguration[]>([]);
   const navigate = useNavigate();
+
+  const items: CollapseProps['items'] = [
+    {
+      key: '1',
+      label: 'Filter Optionen',
+      children: <FilterOptions />,
+    }
+  ];
 
   useEffect(() => {
     setRoutes(RoutesConfigurations);
@@ -66,7 +74,7 @@ export default function MainLayout() {
       </Header>
       <Content className={"py-2 px-12"}>
         {/* <h1>{config[currentKey].title}</h1> */}
-        <h1>asdad</h1>
+        <Collapse items={items} defaultActiveKey={['1']} className="my-4" />
         <div
           style={{
             background: colorBgContainer,
