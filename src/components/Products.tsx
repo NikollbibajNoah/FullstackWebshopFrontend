@@ -4,7 +4,8 @@ import { ProductCard } from "./ProductCard";
 import { useNavigate } from "react-router-dom";
 import { addProductToCart, fetchProducts } from "../services";
 import { Spin } from "antd";
-import { FilterOptionsData } from "./FilterOptions";
+import { FilterOptionsData } from "./filter/FilterOptions";
+import { NotificationPlacement } from "antd/es/notification/interface";
 
 export interface ShoppingCartProductsProps {
   id?: number;
@@ -19,10 +20,12 @@ export interface ShoppingCartProductsProps {
 
 export interface ProductsPageProps {
   filterOptionsData: FilterOptionsData;
+  openNotification: (placement: NotificationPlacement, product: ProductProps) => void;
 }
 
 export const Products: React.FC<ProductsPageProps> = ({
   filterOptionsData,
+  openNotification,
 }) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [products, setProducts] = useState<ProductProps[]>([]);
@@ -34,6 +37,7 @@ export const Products: React.FC<ProductsPageProps> = ({
 
   const handleAddToCart = async (product: ProductProps) => {
     await addProductToCart(product);
+    openNotification("bottomRight", product);
   };
 
   useEffect(() => {
